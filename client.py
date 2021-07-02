@@ -1,17 +1,17 @@
 import socket
 import time
-
-PORT = 5050
-SERVER = "localhost"
-ADDR = (SERVER, PORT)
-FORMAT = "utf-8"
-DISCONNECT_MESSAGE = "!DISCONNECT"
+from config import ADDR, FORMAT, DISCONNECT_MESSAGE
 
 
 def connect():
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client.connect(ADDR)
     return client
+
+
+def receive(client):
+    mes = client.recv(16)
+    print(f'{mes.decode()}')
 
 
 def send(client, msg):
@@ -32,6 +32,7 @@ def start():
             break
 
         send(connection, msg)
+        receive(connection)
 
     send(connection, DISCONNECT_MESSAGE)
     time.sleep(1)
